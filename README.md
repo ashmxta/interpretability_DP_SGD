@@ -4,7 +4,7 @@ The scripts in this repo evaluate various approximation techniques on per-instan
 
 ## Model training to obtain per-instance per step privacy costs
 1. To compute the sensitivity of certain data points before computing their per-instance guarantees of DP-SGD:
-    - Use run.sh (or run_loop.sh to do multiple runs at once) compute sensitivity for 10 MNIST data points over 40 epochs (staged every epoch) in the background:
+    - Use run.sh (or run_loop.sh to do multiple runs at once) to compute sensitivity for 10 MNIST data points over 40 epochs (staged every epoch) in the background:
         - to make the script executable: chmod +x run.sh
         - to run in background: nohup ./run.sh > output.log 2>&1 &
         - checkpoints saved to models/ckptX (X = run)
