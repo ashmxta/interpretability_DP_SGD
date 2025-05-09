@@ -6,6 +6,11 @@ import numpy as np
 import train
 import utils
 
+"""
+modifications: 
+- changed np.random. to rng. equivalent -> makes results fully reproducible given a random seed
+- default random seed = 24
+"""
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--points', nargs="+", type=int, default=[0, 1], help='indices of data points to compute sensitivity')
@@ -28,7 +33,7 @@ parser.add_argument('--res-name', type=str, default='res', help='sensitivity wil
 parser.add_argument('--gamma', type=float, default=None, help='for learning rate schedule')
 parser.add_argument('--dec-lr', nargs="+", type=int, default=None, help='for learning rate schedule')
 parser.add_argument('--id', type=str, default='', help="experiment id")
-parser.add_argument('--seed', type=int, default=0)
+parser.add_argument('--seed', type=int, default=24)
 parser.add_argument('--overwrite', type=int, default=0, help="whether overwrite existing result files")
 parser.add_argument('--poisson-train', type=int, default=1, help="should always be 1 for correct DPSGD")
 parser.add_argument('--stage', type=str, default='initial', help='initial, middle, final, or 0 to 1 where 0 means not'
@@ -39,7 +44,8 @@ parser.add_argument('--less-point', type=int, default=0, help="if set to 1, we c
                                                               "Note the missing point will impact how training, so"
                                                               "in this case arg.points can only contain 1 point.")
 arg = parser.parse_args()
-np.random.seed(arg.seed)
+rng = np.random.default_rng(arg.seed)
+# np.random.seed(arg.seed)
 
 if arg.less_point:
     assert isinstance(arg.points, int)
@@ -125,11 +131,14 @@ elif "renyi" in arg.exp and arg.reduction == "mean":
             indices1, indices2 = remove1_indices, all_indices
 
         for b in range(arg.num_iters):
-            np.random.shuffle(indices1)
-            np.random.shuffle(indices2)
+            rng.shuffle(indices1)
+            rng.shuffle(indices2)
+                # np.random.shuffle(indices1)
+                # np.random.shuffle(indices2)
 
             # target_batch is x_B from X
-            sampling = np.random.binomial(1, p, size1)
+            sampling = rng.binomial(1, p, size1)
+                # sampling = np.random.binomial(1, p, size1)
             target_batch = indices1[sampling.astype(np.bool8)]
 
             # these are the num_batches of alpha batches from X', size [num_batches, arg.alpha * batch_size]
@@ -137,7 +146,8 @@ elif "renyi" in arg.exp and arg.reduction == "mean":
             for i in range(arg.num_batches):
                 alpha_batches.append([])
                 for j in range(arg.alpha):
-                    sampling = np.random.binomial(1, p, size2)
+                    sampling = rng.binomial(1, p, size2)
+                        # sampling = np.random.binomial(1, p, size2)
                     alpha_batches[-1].append(indices2[sampling.astype(np.bool8)])
 
             for batch in alpha_batches:
