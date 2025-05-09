@@ -7,20 +7,25 @@ import train
 import utils
 
 """
+notes: 
+- running this script creates a res folder in project root directory (same level as sensitivity folder)
+- each file in res corresponds to a single run - res${run}.CSV
+- data is saved for each point at multiple stages in training 
+
 modifications: 
 - changed np.random. to rng. equivalent -> makes results fully reproducible given a random seed
 - default random seed = 24
 """
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--points', nargs="+", type=int, default=[0, 1], help='indices of data points to compute sensitivity')
-parser.add_argument('--batch-size', type=int, default=128)
+parser.add_argument('--points', nargs="+", type=int, default=list(range(10)), help='indices of data points to compute sensitivity')
+parser.add_argument('--batch-size', type=int, default=256)
 parser.add_argument('--num-iters', type=int, default=20, help='only useful for renyi')
 parser.add_argument('--alpha', type=int, default=8, help='only useful for renyi')
 parser.add_argument('--num-batches', type=int, default=100, help='only useful for renyi')
 parser.add_argument('--lr', type=float, default=0.1)
 parser.add_argument('--cn', type=float, default=1, help='clipping norm')
-parser.add_argument('--epochs', type=int, default=200)
+parser.add_argument('--epochs', type=int, default=40)
 parser.add_argument('--dp', type=int, default=1)
 parser.add_argument('--eps', type=float, default=10)
 parser.add_argument('--optimizer', type=str, default="sgd")
@@ -39,7 +44,7 @@ parser.add_argument('--poisson-train', type=int, default=1, help="should always 
 parser.add_argument('--stage', type=str, default='initial', help='initial, middle, final, or 0 to 1 where 0 means not'
                                                                  'training has beend done and 1 means training finishes')
 parser.add_argument('--reduction', type=str, default='sum', help="update rule, mean or sum")
-parser.add_argument('--exp', type=str, default='renyi', help='experiment type: eps_delta, or renyi')
+parser.add_argument('--exp', type=str, default='eps_delta', help='experiment type: eps_delta, or renyi')
 parser.add_argument('--less-point', type=int, default=0, help="if set to 1, we consider the dataset with 1 less point."
                                                               "Note the missing point will impact how training, so"
                                                               "in this case arg.points can only contain 1 point.")
