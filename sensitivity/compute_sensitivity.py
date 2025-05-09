@@ -165,7 +165,7 @@ elif "renyi" in arg.exp and arg.reduction == "mean":
                 else:
                     df = pd.DataFrame()
                 df = pd.concat([df, pd.DataFrame({f"distance ({arg.reduction})": res[0], "step": step, "p": p, "batch": b,
-                                "point": point_index, "sigma": train_fn.sigma, "accuracy": accuracy, **vars(arg)})])
+                                "point": point_index, "sigma": train_fn.sigma, "accuracy": accuracy,"type": arg.stage, **vars(arg)})])
                 df.to_csv(temp_res_dir, index=False)
                 torch.cuda.empty_cache()
 
@@ -187,6 +187,6 @@ else:
 
     df = pd.concat([df, pd.DataFrame({f"distance ({arg.reduction})": res, "step": step,
                                       "real batch size": real_bs, "p": p, "point": indices, "sigma": train_fn.sigma,
-                                      "correct": correct, "accuracy": accuracy, **vars(arg)})])
+                                      "correct": correct, "accuracy": accuracy,"type": arg.stage, **vars(arg)})])
     df.to_csv(temp_res_dir, index=False)
     os.rename(temp_res_dir, res_dir)
