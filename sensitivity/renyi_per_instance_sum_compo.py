@@ -1,11 +1,6 @@
-#This script computes the per-step contributions to the over per-instance composition guarantee (applied to the sum update rule)
+# This script computes the per-step contributions to the over per-instance composition guarantee (applied to the sum update rule)
 # changes:
 # 1. x[feature] * bs -> x[feature] (line 81)
-# 2. order = df['step'].max() * 3 -> order = min(df['step'].max() * 3, 100) (line 71)
-# 3. return math.factorial(n) / math.factorial(k) / math.factorial(n - k) -> return comb(n, k, exact=False) (line 18)
-
-
-
 
 import pandas as pd
 import numpy as np
@@ -71,7 +66,7 @@ assert len(df['sigma'].unique()) == 1
 assert len(df['batch_size'].unique()) == 1
 sigma = df['sigma'].unique()[0]
 bs = df['batch_size'].unique()[0]
-order = min(df['step'].max() * 3, 100)
+order = df['step'].max() * 3
 
 if dataset == "MNIST":
     p = bs / 60000
