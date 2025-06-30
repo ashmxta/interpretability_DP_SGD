@@ -8,8 +8,9 @@ The scripts in this repo evaluate various approximation techniques on per-instan
         - to make the script executable: chmod +x run.sh
         - to run in background: nohup ./run.sh > output.log 2>&1 &
         - checkpoints saved to models/ckptX (X = run)
-        - results saved to res/resX.csv; 10 runs completed for this experiment
-2. To obtain the total privacy loss (per data point, composition over steps)
+        - results saved to res/resX.csv; 10 runs completed for this experiment (note these files are saved according to training run)
+        - res_per_point contains CSV files per point per run and average of grad norms across trials per point (naming convention: res_runX_pointX / res_runA_pointX)
+2. To obtain the total privacy loss (per data point, composition over steps), run 
 3. 
 
  ## Plotting privacy cost curves
