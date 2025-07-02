@@ -25,7 +25,7 @@ def create_sequences(batch_size, dataset_size, epochs, sample_data, poisson=Fals
         sequence = []
         for _ in range(num_batch):
             sampling = np.random.binomial(1, p, dataset_size)
-            indices = dataset[sampling.astype(np.bool8)]
+            indices = dataset[sampling.astype(np.bool_)]
             sequence.append(indices)
         sequence = np.array(sequence, dtype=object)
     else:

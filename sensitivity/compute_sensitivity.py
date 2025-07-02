@@ -18,7 +18,7 @@ modifications:
 """
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--points', nargs="+", type=int, default=list(range(10)), help='indices of data points to compute sensitivity')
+parser.add_argument('--points', nargs="+", type=int, default=list(range(1000)), help='indices of data points to compute sensitivity')
 parser.add_argument('--batch-size', type=int, default=256)
 parser.add_argument('--num-iters', type=int, default=20, help='only useful for renyi')
 parser.add_argument('--alpha', type=int, default=8, help='only useful for renyi')
@@ -144,7 +144,7 @@ elif "renyi" in arg.exp and arg.reduction == "mean":
             # target_batch is x_B from X
             sampling = rng.binomial(1, p, size1)
                 # sampling = np.random.binomial(1, p, size1)
-            target_batch = indices1[sampling.astype(np.bool8)]
+            target_batch = indices1[sampling.astype(np.bool_)]
 
             # these are the num_batches of alpha batches from X', size [num_batches, arg.alpha * batch_size]
             alpha_batches = []
@@ -153,7 +153,7 @@ elif "renyi" in arg.exp and arg.reduction == "mean":
                 for j in range(arg.alpha):
                     sampling = rng.binomial(1, p, size2)
                         # sampling = np.random.binomial(1, p, size2)
-                    alpha_batches[-1].append(indices2[sampling.astype(np.bool8)])
+                    alpha_batches[-1].append(indices2[sampling.astype(np.bool_)])
 
             for batch in alpha_batches:
                 res = train_fn.sensitivity_renyi(target_batch, batch, arg.alpha, cn=arg.cn)

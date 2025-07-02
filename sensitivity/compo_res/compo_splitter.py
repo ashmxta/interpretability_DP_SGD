@@ -30,3 +30,9 @@ if __name__ == "__main__":
         print("Usage: python compo_splitter.py <compo_resX.csv>")
         sys.exit(1)
     split_compo_csv_by_point(sys.argv[1])
+
+
+# to run for a defined range of compo files
+# for i in {1..10}; do
+#     python compo_splitter.py compo_res$i.csv
+# done

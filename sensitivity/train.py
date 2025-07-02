@@ -10,7 +10,10 @@ from opacus import PrivacyEngine, GradSampleModule
 from opacus.accountants.utils import get_noise_multiplier
 import utils
 import model
-
+import opacus.accountants.prv
+# from torch.serialization import _legacy_safe_globals (OUTDATED)
+from torch.serialization import add_safe_globals
+add_safe_globals([opacus.accountants.prv.PRVAccountant])
 
 torch.backends.cudnn.benchmark = True
 
@@ -124,7 +127,7 @@ class train_fn():
             torch.save(state, save_path)
 
     def load(self, path):
-        states = torch.load(path)
+        states = torch.load(path, weights_only=False)
         self.net.load_state_dict(states['net'])
         self.optimizer.load_state_dict(states['optimizer'])
         if self.scheduler is not None:
