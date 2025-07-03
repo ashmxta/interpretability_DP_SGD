@@ -5,14 +5,13 @@ The scripts in this repo evaluate various approximation techniques on per-instan
 ## 1. Model training to obtain gradient norms and per-point privacy guarantees:
 
 a) To compute the gradeint norms of certain data points before computing their per-point guarantees of DP-SGD:
-
-    - Use run_loop.sh for grad norms 'sensitivity' (1K points, 40 epochs)
-        - make the script executable: chmod +x run.sh
-        - run in background: nohup ./run.sh > output.log 2>&1 &
-        - checkpoints saved to models/ckptX (X = run)
-        - results saved to sensitivity/res/resX.csv; X = run, 10 runs for this experiment
-        - res_per_point contains CSV files per point per run 
-        - naming convention: res_runX_pointX / res_runA_pointX (runA = average across runs)
+- Use run_loop.sh for grad norms 'sensitivity' (1K points, 40 epochs)
+    - make the script executable: chmod +x run.sh
+    - run in background: nohup ./run.sh > output.log 2>&1 &
+    - checkpoints saved to models/ckptX (X = run)
+    - results saved to sensitivity/res/resX.csv; X = run, 10 runs for this experiment
+    - res_per_point contains CSV files per point per run 
+    - naming convention: res_runX_pointX / res_runA_pointX (runA = average across runs)
         
 b) To obtain the privacy loss, per data point, per step
 
