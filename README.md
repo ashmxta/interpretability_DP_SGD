@@ -3,7 +3,7 @@
 The scripts in this repo evaluate various approximation techniques on per-instance per-step privacy cost curves, with the goal of reducing compute costs of experiments at scale. Model training and grad norm computation scripts are in the 'sensitivity' folder, the set-up is adapted from [Gradients Look Alike: Sensitivity is Often Overestimated in DP-SGD](https://arxiv.org/abs/2307.00310).
 
 ## 1. Obtain per-point per step privacy guarantees:
-- We need per-step per-point gradient norms to compute prvacy costs
+- We need per-step per-point gradient norms to compute privacy costs
 - Gradient norms show the model's sensitivity to a datapoint at a given step
     - Use run_loop.sh for grad norms (1K points, 40 epochs)
         - make the script executable: chmod +x run.sh
