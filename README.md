@@ -26,6 +26,7 @@ The scripts in this repo evaluate various approximation techniques on per-instan
 - [in-progress] data visualization with seaborn
 
  ## Plotting privacy cost curves (approximation techniques)
-- offset interpolation
-- neural network approximation
-- linear interpolation
+- Summer 2024
+    - offset interpolation
+    - neural network approximation
+    - linear interpolation
