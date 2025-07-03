@@ -18,7 +18,7 @@ done
 
 echo "Composition calculations completed."
 
-# Instructions:
+
 # chmod +x run_compo.sh       --> to make executable
 # ./run_compo.sh              --> to run
 # nohup ./run_compo.sh > output_compo.log 2>&1 &   --> to run in background
