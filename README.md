@@ -11,7 +11,6 @@ The scripts in this repo evaluate various approximation techniques on per-instan
         - results saved to sensitivity/res/resX.csv; X = run, 10 runs for this experiment
         - res_per_point contains CSV files per point per run 
         - naming convention: res_runX_pointX / res_runA_pointX (runA = average across runs)
-        
 - To obtain the privacy loss, per data point, per step:
     - Run renyi_per_instance_sum_compo.py, use bash script run_compo.sh if preferred
         - use sensitivity/res/res_concat.py to combine data over multiple runs
