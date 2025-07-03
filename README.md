@@ -20,9 +20,9 @@ The scripts in this repo evaluate various approximation techniques on per-instan
 
 ## 2. Obtain indicies of points of lowest impact:
 
-a) compo_res.CSV files contain privacy costs per step, to obtain the total privacy cost they must first be summed, and then they can be ranked using compo_res/rank.py.
-b) [in-progress] all data in SQL 
-c) [in-progress] data visualization with seaborn
+- compo_res.CSV files contain privacy costs per step, to obtain the total privacy cost they must first be summed, and then they can be ranked using compo_res/rank.py.
+- [in-progress] all data in SQL 
+- [in-progress] data visualization with seaborn
 
  ## Plotting privacy cost curves (approximation techniques)
 ** Summer 2024 codebase
