@@ -1,22 +1,11 @@
 #!/bin/bash
 
-if [ -n "$wait_pid" ]; then
-    echo "Waiting for run.sh to complete..."
-    while kill -0 "$wait_pid" 2>/dev/null; do
-        sleep 1
-    done
-fi
 
-echo "run.sh has completed. Starting composition calculations..."
+echo "Starting composition calculation on res_concat.csv..."
 
-# Loop over res1.csv to res10.csv
-for X in {1..10}
-do
-    echo "Running composition for res${X}.csv..."
-    python3 renyi_per_instance_sum_compo.py "./res/res${X}.csv"
-done
+python3 renyi_per_instance_sum_compo.py "./res/res_concat.csv"
 
-echo "Composition calculations completed."
+echo "Composition calculation completed."
 
 
 # chmod +x run_compo.sh       --> to make executable
