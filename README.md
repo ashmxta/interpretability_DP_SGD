@@ -1,6 +1,6 @@
 # Forged Distributions
 
-The scripts in this repo evaluate various approximation techniques on per-instance per-step privacy cost curves, with the goal of reducing compute costs of experiments at scale. Model training and grad norm computation scripts are in the 'sensitivity' folder, the set-up is adapted from [Gradients Look Alike: Sensitivity is Often Overestimated in DP-SGD](https://arxiv.org/abs/2307.00310).
+The scripts in this repo contains scripts to compute per-instance per-step privacy costs - model training and grad norm computation scripts are in the 'sensitivity' folder, the set-up is adapted from [Gradients Look Alike: Sensitivity is Often Overestimated in DP-SGD](https://arxiv.org/abs/2307.00310). The FairFace folder contains modified versions of these scripts - the goal increase interpretability of DPSGD, understanding what points with least and most impact look like in practice.
 
 ## MNIST - Obtain per-point per step privacy guarantees:
 - We need per-step per-point gradient norms to compute privacy costs
