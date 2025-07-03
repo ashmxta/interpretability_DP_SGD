@@ -7,7 +7,6 @@ The scripts in this repo evaluate various approximation techniques on per-instan
 a) To compute the gradeint norms of certain data points before computing their per-point guarantees of DP-SGD:
 
     - Use run.sh (or run_loop.sh to do multiple runs at once) to compute grad norms for 10 MNIST data points over 40 epochs (staged every epoch) in the background:
-    
         - to make the script executable: chmod +x run.sh
         - to run in background: nohup ./run.sh > output.log 2>&1 &
         - checkpoints saved to models/ckptX (X = run)
