@@ -12,8 +12,7 @@ a) To compute the gradeint norms of certain data points before computing their p
         - checkpoints saved to models/ckptX (X = run)
         - results saved to res/resX.csv; X = run, 10 runs for this experiment
         - res_per_point contains CSV files per point per run 
-        - naming convention: res_runX_pointX / res_runA_pointX
-            - runA = average across runs 
+        - naming convention: res_runX_pointX / res_runA_pointX (runA = average across runs)
         
 b) To obtain the total privacy loss (per data point, composition over steps), run renyi_per_instance_sum_compo.py (using bash script run_compo.sh if preferred)
 
