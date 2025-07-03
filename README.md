@@ -25,7 +25,7 @@ The scripts in this repo contains scripts to compute per-instance per-step priva
 - [in-progress] all data in SQL 
 - [in-progress] data visualization with seaborn
 
-## FairFace 
+## FairFace Dataset
 
 
  ## Plotting privacy cost curves (approximation techniques)
