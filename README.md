@@ -13,4 +13,4 @@ The scripts in this repo evaluate various approximation techniques on per-instan
 2. To obtain the total privacy loss (per data point, composition over steps), run renyi_per_instance_sum_compo.py (using bash script run_compo.sh if preferred)
 
  ## Plotting privacy cost curves (approximation techniques)
-** See summer 2024 codebase
+** Summer 2024 codebase
