@@ -1,4 +1,4 @@
-# Interpretablity of privacy costs in DP-SGD
+# Interpretability of privacy costs in DP-SGD
 The scripts in this repo contains scripts to compute per-instance per-step privacy costs - model training and grad norm computation scripts are in the 'sensitivity' folder, the set-up is adapted from [Gradients Look Alike: Sensitivity is Often Overestimated in DP-SGD](https://arxiv.org/abs/2307.00310). The FairFace folder contains modified versions of these scripts - the goal increase interpretability of DPSGD, understanding what points with least and most impact look like in practice.
 
 ## MNIST - Obtain per-point per step privacy guarantees:
