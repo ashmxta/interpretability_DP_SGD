@@ -10,11 +10,17 @@ a) To compute the gradeint norms of certain data points before computing their p
         - make the script executable: chmod +x run.sh
         - run in background: nohup ./run.sh > output.log 2>&1 &
         - checkpoints saved to models/ckptX (X = run)
-        - results saved to res/resX.csv; X = run, 10 runs for this experiment
+        - results saved to sensitivity/res/resX.csv; X = run, 10 runs for this experiment
         - res_per_point contains CSV files per point per run 
         - naming convention: res_runX_pointX / res_runA_pointX (runA = average across runs)
         
-b) To obtain the total privacy loss (per data point, composition over steps), run renyi_per_instance_sum_compo.py (using bash script run_compo.sh if preferred)
+b) To obtain the privacy loss, per data point, per step
+
+- Run renyi_per_instance_sum_compo.py, use bash script run_compo.sh if preferred
+    - use sensitivity/res/res_concat.py to combine data over multiple runs
+    - chmod +x run_compo.sh
+    - nohup ./run_compo.sh
+    - results saved to sensitivity/compo_res
 
 ## 2. Obtain indicies of points of lowest impact:
 
