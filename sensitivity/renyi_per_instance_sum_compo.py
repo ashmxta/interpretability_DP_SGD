@@ -6,7 +6,8 @@ import os
 from scipy.special import comb
 
 '''
-This script computes the per-step contributions to the over per-instance composition guarantee (applied to the sum update rule.
+- Computes the per-step contributions to the over per-instance composition guarantee (applied to the sum update rule).
+- Saves a new CSV with per-step privacy costs to `compo_res/compo_resX.csv`
 '''
 
 def binom(n, k):
@@ -75,7 +76,7 @@ df = df.groupby(["point", "step"], as_index=False)[feature].apply(lambda grp: sc
 df = df.rename(columns={feature: "Privacy cost"})
 # print(df)
 
-# file saving
+#File saving
 os.makedirs("compo_res", exist_ok=True)
 input_filename = os.path.basename(res_file)
 output_filename = input_filename.replace("res", "compo_res")
