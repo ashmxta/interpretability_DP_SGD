@@ -11,7 +11,6 @@ class FairFaceDataset(Dataset):
         self.transform = transform
         assert 'file' in self.data.columns
         assert 'race' in self.data.columns
-
         self.label_map = {label: idx for idx, label in enumerate(sorted(self.data['race'].unique()))}
         self.data['label'] = self.data['race'].map(self.label_map)
 

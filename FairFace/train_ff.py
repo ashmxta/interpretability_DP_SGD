@@ -11,24 +11,25 @@ import opacus.accountants.prv
 from torch.serialization import add_safe_globals
 import utils_ff as utils  # modified utils
 import model
+from fairface_dataset import FairFaceDataset
+import torchvision.transforms as transforms
 
 add_safe_globals([opacus.accountants.prv.PRVAccountant])
 
 '''
 Summary of changes:
-
-
+- import custom dataset class
+- modification of train_fn class to transform (resize images) for ResNet
 '''
-
 
 torch.backends.cudnn.benchmark = True
 
 class train_fn():
-    def __init__(self, lr=0.01, batch_size=128, dataset='SVHN', architecture="resnet20", exp_id=None,
+    def __init__(self, lr=0.01, batch_size=128, dataset='FairFace', architecture="resnet56", exp_id=None,
                  model_dir=None, save_freq=None, dec_lr=None, trainset=None, save_name=None, num_class=10,
                  device=torch.device('cuda:0' if torch.cuda.is_available() else 'cpu'), seed=0, optimizer="sgd",
                  gamma=0.1, overwrite=0, epochs=10, dp=0, sigma=None, cn=1, delta=1e-5, eps=1, norm_type='gn',
-                 sample_data=1, poisson=False, remove_points=None, reduction="sum"):
+                 sample_data=1, poisson=False, remove_points=None, reduction="mean"):
         inputs = inspect.signature(train_fn).parameters
         for item in inputs:
             setattr(self, item, eval(item))
@@ -37,7 +38,6 @@ class train_fn():
         torch.manual_seed(seed)
         torch.cuda.manual_seed(seed)
         torch.cuda.manual_seed_all(seed)
-
         self.save_keyword = "model_step_"
         if save_name is None:
             save_name = f"ckpt_{self.dataset}_{architecture}_{int(eps) if eps % 1 == 0 else eps}_{exp_id}"
@@ -63,22 +63,31 @@ class train_fn():
                         assert len(os.listdir(self.save_dir)) == 0
         else:
             self.save_dir = None
+        
+        # preprocess to make compatible with ResNet
+        transform = transforms.Compose([
+            transforms.Resize((224, 224)),
+            transforms.ToTensor()
+        ])
 
-        if trainset is None:
-            self.trainset = utils.load_dataset(self.dataset, True, download=True)
-        else:
-            self.trainset = trainset
-        self.testset = utils.load_dataset(self.dataset, False, download=True)
+        self.trainset = FairFaceDataset(
+            csv_path="data/fairface_label_train.csv",
+            img_dir="data/fairface_img_train",
+            transform=transform
+        )
+
+        self.testset = FairFaceDataset(
+            csv_path="data/fairface_label_val.csv",
+            img_dir="data/fairface_img_val",
+            transform=transform
+        )
 
         train_size = self.trainset.__len__()
 
         self.sequence = utils.create_sequences(batch_size, train_size, epochs, sample_data, poisson=poisson,
                                                remove_points=remove_points)
 
-        if dataset == "MNIST":
-            in_channel = 1
-        else:
-            in_channel = 3
+        in_channel = 3 # RGB
 
         self.net = architecture(norm_type=norm_type, in_channels=in_channel)
 
@@ -116,11 +125,6 @@ class train_fn():
 
         if model_dir is not None:
             self.load(model_dir)
-
-
-
-
-
 
     def save(self, epoch=None, save_path=None):
         assert epoch is not None or save_path is not None
