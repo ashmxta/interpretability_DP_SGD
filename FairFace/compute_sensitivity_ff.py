@@ -6,8 +6,6 @@ import numpy as np
 import train_ff
 import utils_ff
 """
-yet to update for fairface
-
 notes: 
 - running this script creates a res folder in project root directory (same level as sensitivity folder)
 - each file in res corresponds to a single run - res${run}.CSV
@@ -30,8 +28,8 @@ parser.add_argument('--epochs', type=int, default=40)
 parser.add_argument('--dp', type=int, default=1)
 parser.add_argument('--eps', type=float, default=10)
 parser.add_argument('--optimizer', type=str, default="sgd")
-parser.add_argument('--dataset', type=str, default="MNIST")
-parser.add_argument('--model', type=str, default="lenet")
+parser.add_argument('--dataset', type=str, default="FairFace")
+parser.add_argument('--model', type=str, default="resnet56")
 parser.add_argument('--norm-type', type=str, default="gn", help="Note that batch norm is not compatible with DPSGD")
 parser.add_argument('--save-freq', type=int, default=100, help='frequence of saving checkpoints')
 parser.add_argument('--save-name', type=str, default='ckpt', help='checkpoints will be saved under models/[save-name]')
@@ -44,7 +42,7 @@ parser.add_argument('--overwrite', type=int, default=0, help="whether overwrite 
 parser.add_argument('--poisson-train', type=int, default=1, help="should always be 1 for correct DPSGD")
 parser.add_argument('--stage', type=str, default='initial', help='initial, middle, final, or 0 to 1 where 0 means not'
                                                                  'training has beend done and 1 means training finishes')
-parser.add_argument('--reduction', type=str, default='sum', help="update rule, mean or sum")
+parser.add_argument('--reduction', type=str, default='mean', help="update rule, mean or sum")
 parser.add_argument('--exp', type=str, default='eps_delta', help='experiment type: eps_delta, or renyi')
 parser.add_argument('--less-point', type=int, default=0, help="if set to 1, we consider the dataset with 1 less point."
                                                               "Note the missing point will impact how training, so"
@@ -62,7 +60,7 @@ if isinstance(arg.points, int):
     arg.points = [arg.points]
 point_to_do = np.array(arg.points)
 
-train_fn = train.train_fn(arg.lr, arg.batch_size, arg.dataset, arg.model,
+train_fn = train_ff.train_fn(arg.lr, arg.batch_size, arg.dataset, arg.model,
                           exp_id=arg.id, save_freq=arg.save_freq, optimizer=arg.optimizer, epochs=arg.epochs,
                           dp=arg.dp, cn=arg.cn, eps=arg.eps, dec_lr=arg.dec_lr, gamma=arg.gamma, seed=arg.seed,
                           norm_type=arg.norm_type, poisson=arg.poisson_train, save_name=arg.save_name,
@@ -79,7 +77,7 @@ if os.path.exists(temp_res_dir):
     os.remove(temp_res_dir)
 print(f"path to result file: {res_dir}")
 
-step = utils.find_ckpt(arg.stage, trainset_size, arg.batch_size, arg.save_freq, arg.epochs)
+step = utils_ff.find_ckpt(arg.stage, trainset_size, arg.batch_size, arg.save_freq, arg.epochs)
 cur_path = f"{train_fn.save_dir}/model_step_{step}"
 
 ###########
@@ -90,9 +88,9 @@ if not os.path.exists(cur_path):
     for step in range(train_fn.sequence.shape[0]):
         train_fn.train(step)
     train_fn.validate()
-    step = utils.find_ckpt(arg.stage, trainset_size, arg.batch_size, arg.save_freq, arg.epochs)
+    step = utils_ff.find_ckpt(arg.stage, trainset_size, arg.batch_size, arg.save_freq, arg.epochs)
     cur_path = f"{train_fn.save_dir}/model_step_{step}"
-    train_fn = train.train_fn(arg.lr, arg.batch_size, arg.dataset, arg.model,
+    train_fn = train_ff.train_fn(arg.lr, arg.batch_size, arg.dataset, arg.model,
                               exp_id=arg.id, save_freq=arg.save_freq, optimizer=arg.optimizer, epochs=arg.epochs,
                               dp=arg.dp, cn=arg.cn, eps=arg.eps, dec_lr=arg.dec_lr, gamma=arg.gamma, seed=arg.seed,
                               norm_type=arg.norm_type, poisson=arg.poisson_train, reduction=arg.reduction)
