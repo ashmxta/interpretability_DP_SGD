@@ -99,8 +99,14 @@ class train_fn():
         num_batch = self.trainset.__len__() / self.batch_size
 
         self.net.to(self.device)
-        self.optimizer, self.scheduler = utils.get_optimizer(dataset, self.net, lr, num_batch, dec_lr=dec_lr,
-                                                             optimizer=optimizer, gamma=gamma)
+        self.optimizer, self.scheduler = utils.get_optimizer(           
+            self.net,           
+            lr=lr,
+            num_batch=num_batch,
+            dec_lr=dec_lr,
+            gamma=gamma
+        )
+
         self.criterion = torch.nn.CrossEntropyLoss().to(self.device)
 
         if dp:

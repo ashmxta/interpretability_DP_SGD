@@ -16,10 +16,10 @@ class FairFaceDataset(Dataset):
 
     def __len__(self):
         return len(self.data)
-
     def __getitem__(self, idx):
         row = self.data.iloc[idx]
-        img_path = os.path.join(self.img_dir, row['file'])
+        img_name = row['file'].replace("train/", "").replace("val/", "")
+        img_path = os.path.join(self.img_dir, img_name)
         image = Image.open(img_path).convert('RGB')
         label = row['label']
         if self.transform:
