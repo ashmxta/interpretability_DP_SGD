@@ -25,8 +25,7 @@ The scripts in this repo contains scripts to compute per-instance per-step priva
 - [in-progress] data visualization with seaborn
 
 ## FairFace Dataset
-
-
+- first upload data: scp -r /Users/ashmitabhattacharyya/Desktop/datasets/fairface/* ashmita@cs.toronto.edu:/h/321/ashmita/forged_distributions/FairFace/data
  ## Plotting privacy cost curves (approximation techniques)
 - Summer 2024
     - offset interpolation
