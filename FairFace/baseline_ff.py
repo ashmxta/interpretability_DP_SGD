@@ -21,7 +21,7 @@ print(f"Total steps: {model.sequence.shape[0]}")
 
 for step in range(model.sequence.shape[0]):
     print(f"Training step {step}")
-    model.train(step)
+    model.train(step) 
 
 acc = model.validate()
 print(f"Final accuracy: {acc * 100:.2f}%")
