@@ -71,14 +71,14 @@ class train_fn():
         ])
 
         self.trainset = FairFaceDataset(
-            csv_path="data/fairface/fairface_label_train.csv",
-            img_dir="data/fairface/fairface_img/train",
+            csv_path="/h/321/ashmita/forged_distributions/FairFace/data/fairface_label_train.csv",
+            img_dir="/h/321/ashmita/forged_distributions/FairFace/data/fairface-img/train",
             transform=transform
         )
 
         self.testset = FairFaceDataset(
-            csv_path="data/fairface/fairface_label_val.csv",
-            img_dir="data/fairface/fairface_img/val",
+            csv_path="/h/321/ashmita/forged_distributions/FairFace/data/fairface_label_val.csv",
+            img_dir="/h/321/ashmita/forged_distributions/FairFace/data/fairface-img/val",
             transform=transform
         )
 
