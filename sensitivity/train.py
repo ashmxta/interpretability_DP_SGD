@@ -60,7 +60,7 @@ class train_fn():
             self.save_dir = None
 
         if trainset is None:
-            self.trainset = utils.load_dataset(self.dataset, True, download=True)
+            self.trainset = self.trainset = utils.load_dataset(self.dataset, train=True, download=True, removed_indices=remove_points)
         else:
             self.trainset = trainset
         self.testset = utils.load_dataset(self.dataset, False, download=True)

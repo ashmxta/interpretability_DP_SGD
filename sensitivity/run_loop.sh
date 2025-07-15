@@ -8,7 +8,7 @@ do
         # beginning of each epoch (40 total)
         # scale keeps 3 d.p.
         echo "Starting run ${run}, stage ${stage}"
-        python compute_sensitivity.py --stage $stage --save-name "ckpt${run}" --res-name "res${run}"
+        python compute_sensitivity.py --stage $stage --save-name "ckpt${run}" --res-name "res${run}" --less-point "1" --removedpoints 293
     done
 done
 

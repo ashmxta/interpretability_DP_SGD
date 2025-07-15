@@ -5,6 +5,11 @@ import torch.optim as optim
 import torchvision.transforms as transforms
 
 
+'''
+Modified to support point removal (by indicies)
+'''
+
+
 def create_sequences(batch_size, dataset_size, epochs, sample_data, poisson=False, remove_points=None):
     # create a sequence of data indices used for training
     num_batch = (epochs * dataset_size) // batch_size
@@ -35,18 +40,27 @@ def create_sequences(batch_size, dataset_size, epochs, sample_data, poisson=Fals
     return sequence
 
 
-def load_dataset(dataset, train, download=False, apply_transform=False):
+# def load_dataset(dataset, train, download=False, apply_transform=False):
+def load_dataset(dataset, train, download=False, apply_transform=False, removed_indices=None):
     try:
         dataset_class = eval(f"torchvision.datasets.{dataset}")
     except:
         raise NotImplementedError(f"Dataset {dataset} is not implemented by pytorch.")
-
     if dataset == "MNIST":
         transform = transforms.Compose([
             transforms.Resize((32, 32)),
             transforms.ToTensor(),
             transforms.Normalize((0.1307,), (0.3081,))
         ])
+        data = dataset_class(root='./data', train=train, download=download, transform=transform)
+        # filter out removed_indices
+        if removed_indices is not None:
+            mask = np.ones(len(data.data), dtype=bool)
+            mask[removed_indices] = False
+            data.data = data.data[mask]
+            data.targets = data.targets[mask]
+        return data
+
     elif dataset == "FashionMNIST":
         transform = transforms.Compose(
             [transforms.ToTensor(),

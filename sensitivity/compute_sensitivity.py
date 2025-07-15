@@ -48,18 +48,20 @@ parser.add_argument('--exp', type=str, default='eps_delta', help='experiment typ
 parser.add_argument('--less-point', type=int, default=0, help="if set to 1, we consider the dataset with 1 less point."
                                                               "Note the missing point will impact how training, so"
                                                               "in this case arg.points can only contain 1 point.")
+parser.add_argument('--removedpoints', nargs='+', type=int, default=list(range(10)), help='indices of data points to remove')
+
 arg = parser.parse_args()
 rng = np.random.default_rng(arg.seed)
 # np.random.seed(arg.seed)
 
 if arg.less_point:
-    assert isinstance(arg.points, int)
-    remove_point = arg.points
+    assert isinstance(arg.removedpoints, int)
+    remove_point = arg.removedpoints
 else:
     remove_point = None
-if isinstance(arg.points, int):
-    arg.points = [arg.points]
-point_to_do = np.array(arg.points)
+if isinstance(arg.removedpoints, int):
+    arg.points = [arg.removedpoints]
+point_to_do = np.array(arg.removedpoints)
 
 train_fn = train.train_fn(arg.lr, arg.batch_size, arg.dataset, arg.model,
                           exp_id=arg.id, save_freq=arg.save_freq, optimizer=arg.optimizer, epochs=arg.epochs,
