@@ -11,7 +11,6 @@ notes:
 - running this script creates a res folder in project root directory (same level as sensitivity folder)
 - each file in res corresponds to a single run - res${run}.CSV
 - data is saved for each point at multiple stages in training 
-
 modifications: 
 - changed np.random. to rng. equivalent -> makes results fully reproducible given a random seed
 - default random seed = 24
@@ -55,13 +54,13 @@ rng = np.random.default_rng(arg.seed)
 # np.random.seed(arg.seed)
 
 if arg.less_point:
-    assert isinstance(arg.removedpoints, int)
+    assert isinstance(arg.removedpoints, list) or isinstance(arg.removedpoints, tuple)
     remove_point = arg.removedpoints
+    point_to_do = np.array(remove_point)
 else:
     remove_point = None
-if isinstance(arg.removedpoints, int):
-    arg.points = [arg.removedpoints]
-point_to_do = np.array(arg.removedpoints)
+    point_to_do = np.array(arg.points)
+
 
 train_fn = train.train_fn(arg.lr, arg.batch_size, arg.dataset, arg.model,
                           exp_id=arg.id, save_freq=arg.save_freq, optimizer=arg.optimizer, epochs=arg.epochs,

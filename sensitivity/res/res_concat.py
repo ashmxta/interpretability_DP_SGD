@@ -6,7 +6,7 @@ RES_DIR = os.path.dirname(__file__)
 OUTPUT_FILE = os.path.join(RES_DIR, "res_concat.csv")
 
 # Collect all filenames
-file_list = [os.path.join(RES_DIR, f"res{i}.csv") for i in range(1, 11)]
+file_list = [os.path.join(RES_DIR, f"res{i}.csv") for i in range(1,4)]
 
 # Read and concatenate
 df_all = pd.concat([pd.read_csv(file) for file in file_list], ignore_index=True)
