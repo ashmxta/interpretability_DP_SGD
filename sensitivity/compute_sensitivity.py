@@ -19,19 +19,19 @@ modifications:
 parser = argparse.ArgumentParser()
 parser.add_argument('--points', nargs="+", type=int, default=list(range(1000)), help='indices of data points to compute sensitivity')
 parser.add_argument('--batch-size', type=int, default=256)
-parser.add_argument('--num-iters', type=int, default=20, help='only useful for renyi')
+parser.add_argument('--num-iters', type=int, default=5, help='only useful for renyi')
 parser.add_argument('--alpha', type=int, default=8, help='only useful for renyi')
-parser.add_argument('--num-batches', type=int, default=100, help='only useful for renyi')
+parser.add_argument('--num-batches', type=int, default=20, help='only useful for renyi')
 parser.add_argument('--lr', type=float, default=0.1)
 parser.add_argument('--cn', type=float, default=1, help='clipping norm')
-parser.add_argument('--epochs', type=int, default=40)
+parser.add_argument('--epochs', type=int, default=2)
 parser.add_argument('--dp', type=int, default=1)
 parser.add_argument('--eps', type=float, default=10)
 parser.add_argument('--optimizer', type=str, default="sgd")
 parser.add_argument('--dataset', type=str, default="MNIST")
 parser.add_argument('--model', type=str, default="lenet")
 parser.add_argument('--norm-type', type=str, default="gn", help="Note that batch norm is not compatible with DPSGD")
-parser.add_argument('--save-freq', type=int, default=100, help='frequence of saving checkpoints')
+parser.add_argument('--save-freq', type=int, default=1000, help='frequence of saving checkpoints')
 parser.add_argument('--save-name', type=str, default='ckpt', help='checkpoints will be saved under models/[save-name]')
 parser.add_argument('--res-name', type=str, default='res', help='sensitivity will be saved in res/[res-name].csv')
 parser.add_argument('--gamma', type=float, default=None, help='for learning rate schedule')
@@ -165,8 +165,19 @@ elif "renyi" in arg.exp and arg.reduction == "mean":
                     df = pd.read_csv(res_dir)
                 else:
                     df = pd.DataFrame()
-                df = pd.concat([df, pd.DataFrame({f"distance ({arg.reduction})": res[0], "step": step, "p": p, "batch": b,
-                                "point": point_index, "sigma": train_fn.sigma, "accuracy": accuracy,"type": arg.stage, **vars(arg)})])
+                n = len(np.atleast_1d(res[0]))
+                df_new = pd.DataFrame({
+                    f"distance ({arg.reduction})": np.atleast_1d(res[0]),
+                    "step": [step] * n,
+                    "p": [p] * n,
+                    "batch": [b] * n,
+                    "point": [point_index] * n,
+                    "sigma": [train_fn.sigma] * n,
+                    "accuracy": [accuracy] * n,
+                    "type": [arg.stage] * n,
+                    **{k: [v] * n for k, v in vars(arg).items()}
+                })
+                df = pd.concat([df, df_new])
                 df.to_csv(temp_res_dir, index=False)
                 torch.cuda.empty_cache()
 
@@ -186,8 +197,20 @@ else:
     else:
         df = pd.DataFrame()
 
-    df = pd.concat([df, pd.DataFrame({f"distance ({arg.reduction})": res, "step": step,
-                                      "real batch size": real_bs, "p": p, "point": indices, "sigma": train_fn.sigma,
-                                      "correct": correct, "accuracy": accuracy,"type": arg.stage, **vars(arg)})])
+    n = len(np.atleast_1d(res))
+    df_new = pd.DataFrame({
+        f"distance ({arg.reduction})": np.atleast_1d(res),
+        "step": [step] * n,
+        "real batch size": [real_bs] * n,
+        "p": [p] * n,
+        "point": np.atleast_1d(indices),
+        "sigma": [train_fn.sigma] * n,
+        "correct": np.atleast_1d(correct),
+        "accuracy": [accuracy] * n,
+        "type": [arg.stage] * n,
+        **{k: [v] * n for k, v in vars(arg).items()}
+    })
+    df = pd.concat([df, df_new])
+
     df.to_csv(temp_res_dir, index=False)
     os.rename(temp_res_dir, res_dir)

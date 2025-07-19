@@ -2,13 +2,13 @@
 # Iterate runs from XX to XX
 for run in {1..3}
 do
-    for i in {0..10}
+    for i in {0..1}
     do
-        stage=$(echo "scale=3; $i / 10" | bc) 
+        stage=$(echo "scale=3; $i / 2" | bc) 
         # beginning of each epoch (40 total)
         # scale keeps 3 d.p.
         echo "Starting run ${run}, stage ${stage}"
-        python compute_sensitivity.py --stage $stage --save-name "ckpt_n1${run}" --res-name "res_n1${run}" 
+        python compute_sensitivity.py --stage $stage --save-name "ckpt${run}" --res-name "res${run}" 
     done
 done
 
@@ -20,7 +20,5 @@ echo "Composition calculation completed."
 echo "Running rank.py to rank results..."
 python3 ./compo_res/rank.py
 
-# to make the script executable: chmod +x run_loop.sh
-# to run: ./run_loop.sh
-# to run in background: nohup ./run_loop.sh > output.log 2>&1 &
+# run in background: chmod +x run_loop.sh && nohup ./run_loop.sh > output.log 2>&1 &
 # to kill: kill -9 [PID]
